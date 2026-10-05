@@ -68,12 +68,13 @@ void run(int argc, char** argv)
 
     unsigned int benchmarkingIters = 10;
 
-    unsigned int width = 2048;
-    unsigned int height = 2048;
+    // was 2048
+    unsigned int width = 5048;
+    unsigned int height = 5048;
     unsigned int iterationsLimit = 256;
-    unsigned int isSmoothing = false;
+    unsigned int isSmoothing = true;
 
-#if 1
+#if 0
     float centralX = -0.789136f;
     float centralY = -0.150316f;
     float sizeX = 0.00239f;
@@ -121,9 +122,20 @@ void run(int argc, char** argv)
             } else if (algorithm == "GPU") {
                 // _______________________________OpenCL_____________________________________________
                 if (context.type() == gpu::Context::TypeOpenCL) {
-                    // TODO ocl_mandelbrot.exec(...);
-                    throw std::runtime_error(CODE_IS_NOT_IMPLEMENTED);
+                    float fromX = centralX - sizeX / 2.0f;
+                    float fromY = centralY - sizeY / 2.0f;
 
+                    unsigned int global_work_size_x = div_ceil(width, (unsigned int)GROUP_SIZE_X) * GROUP_SIZE_X;
+                    unsigned int global_work_size_y = div_ceil(height, (unsigned int)GROUP_SIZE_Y) * GROUP_SIZE_Y;
+
+                    ocl_mandelbrot.exec(
+                        gpu::WorkSize(GROUP_SIZE_X, GROUP_SIZE_Y, global_work_size_x, global_work_size_y),
+                        gpu_results,
+                        width, height,
+                        fromX, fromY,
+                        sizeX, sizeY,
+                        iterationsLimit, isSmoothing);
+                    gpu_results.readN(current_results.ptr(), width * height);
                     // _______________________________CUDA___________________________________________
                 } else if (context.type() == gpu::Context::TypeCUDA) {
                     // TODO cuda::mandelbrot(..);
