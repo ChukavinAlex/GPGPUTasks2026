@@ -152,3 +152,16 @@
 1824	2108	8135254944724077	main_matrix_transpose.exe	b0999c8e9af82958
 1818	2114	8135254944664087	main_aplusb.exe	47da462bb026d6d5
 1830	2353	8135254944794050	main_matrix_multiply.exe	41e4dcb172690511
+82	7019	8135294169370324	libs/gpu/CMakeFiles/libgpu.dir/libgpu/vulkan/engine.cpp.obj	6cf419fd72445b9d
+7020	7264	8135294238754790	libs/gpu/libgpu.lib	ead3f9bf330272fb
+7265	7670	8135294245199015	C:/Users/user/GPGPUTasks2026/src/kernels/cl/generated_kernels/matrix_02_transpose_coalesced_via_local_memory_nospir_opencl120.h	63604d3073473081
+7280	7930	8135294241343991	libs/gpu/libgpu_test.exe	cb17aaff71e677d7
+7670	8197	8135294245249016	main_aplusb.exe	47da462bb026d6d5
+7689	8207	8135294245439029	main_matrix_multiply.exe	41e4dcb172690511
+7680	8208	8135294245349022	main_matrix_transpose.exe	b0999c8e9af82958
+45	260	8135295469577235	C:/Users/user/GPGPUTasks2026/src/kernels/cl/generated_kernels/matrix_02_transpose_coalesced_via_local_memory_nospir_opencl120.h	63604d3073473081
+261	1212	8135295469647277	CMakeFiles/GPGPUTasks_core.dir/src/kernels/kernels.cpp.obj	e82296630b57aaf7
+1213	1303	8135295479173193	GPGPUTasks_core.lib	f80d92e8700f642b
+1303	1594	8135295480062573	main_aplusb.exe	47da462bb026d6d5
+1314	1594	8135295480182592	main_matrix_transpose.exe	b0999c8e9af82958
+1323	1599	8135295480272532	main_matrix_multiply.exe	41e4dcb172690511
