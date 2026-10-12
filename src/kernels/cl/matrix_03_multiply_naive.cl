@@ -4,7 +4,9 @@
 
 #include "../defines.h"
 
-__attribute__((reqd_work_group_size(1, 1, 1)))
+#define SIZE_WORK_GROUP 16
+
+__attribute__((reqd_work_group_size(SIZE_WORK_GROUP, SIZE_WORK_GROUP, 1)))
 __kernel void matrix_03_multiply_naive(
                        __global const float* a, // rows=h x cols=k
                        __global const float* b, // rows=k x cols=w
@@ -14,4 +16,18 @@ __kernel void matrix_03_multiply_naive(
                                 unsigned int k)
 {
     // TODO
+    const unsigned int x = get_global_id(0);
+    const unsigned int y = get_global_id(1);
+
+    if (x >= w || y >= h) {
+        return;
+    }
+
+    float sum = 0.0f;
+
+    for (unsigned int i = 0; i < k; ++i) {
+        sum += a[y * k + i] * b[i * w + x];
+    }
+
+    c[y * w + x] = sum;
 }
