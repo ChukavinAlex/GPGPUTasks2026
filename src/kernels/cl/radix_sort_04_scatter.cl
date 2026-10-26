@@ -5,15 +5,49 @@
 #include "helpers/rassert.cl"
 #include "../defines.h"
 
-__attribute__((reqd_work_group_size(1, 1, 1)))
+#define RADIX_BLOCK_SIZE 256
+
+__attribute__((reqd_work_group_size(RADIX_BLOCK_SIZE, 1, 1)))
 __kernel void radix_sort_04_scatter(
-    // это лишь шаблон! смело меняйте аргументы и используемые буфера! можете сделать даже больше кернелов, если это вызовет затруднения - смело спрашивайте в чате
-    // НЕ ПОДСТРАИВАЙТЕСЬ ПОД СИСТЕМУ! СВЕРНИТЕ С РЕЛЬС!! БУНТ!!! АНТИХАЙП!11!!1
     __global const uint* buffer1,
     __global const uint* buffer2,
-                   uint* buffer3,
+    __global       uint* buffer3,
     unsigned int a1,
     unsigned int a2)
 {
-    // TODO
+    const size_t lid = get_local_id(0);
+    const size_t group = get_group_id(0);
+    const size_t i = get_global_id(0);
+
+    const size_t num_groups =
+        ((size_t)a1 + RADIX_BLOCK_SIZE - 1) / RADIX_BLOCK_SIZE;
+
+    __local uint values[RADIX_BLOCK_SIZE];
+    values[lid] = (i < (size_t)a1) ? buffer1[i] : 0u;
+
+    barrier(CLK_LOCAL_MEM_FENCE);
+
+    if (i >= (size_t)a1) {
+        return;
+    }
+
+    const uint bit = (values[lid] >> a2) & 1u;
+    uint rank = 0;
+
+    for (size_t j = 0; j < lid; ++j) {
+        const uint previous_bit = (values[j] >> a2) & 1u;
+        if (previous_bit == bit) {
+            ++rank;
+        }
+    }
+
+    size_t position;
+
+    if (bit == 0u) {
+        position = (size_t)buffer2[group] + rank;
+    } else {
+        position = (size_t)buffer2[num_groups + group] + rank;
+    }
+
+    buffer3[position] = values[lid];
 }
