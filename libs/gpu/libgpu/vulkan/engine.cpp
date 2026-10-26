@@ -68,6 +68,7 @@ namespace {
 		vk::DebugUtilsMessageTypeFlagsEXT any_type = vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation | vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance | vk::DebugUtilsMessageTypeFlagBitsEXT::eDeviceAddressBinding;
 		create_info.messageType = any_type;
 		create_info.pfnUserCallback = debugCallback;
+
 		create_info.pUserData = (void*) instance_context;
 
 		rassert(VKF.vkCreateDebugUtilsMessengerEXT, 378392459011272);
